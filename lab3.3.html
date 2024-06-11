@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo List</title>
+<link rel = "stylesheet" href = "lab3.css">
+</head>
+<body>
+    <div class="todolist">
+    <h1>ToDo List</h1>
+    </div>
+
+<div class="todo-container">
+    <h2>Todo List</h2>
+    <input type="text" id="todoInput" placeholder="New task">
+    <button onclick="addItem()">Add</button>
+    <ul id="todoList">
+        <!-- Todo items will be dynamically added here -->
+    </ul>
+</div>
+<script>
+    // Array to store todo items
+    let todos = [];
+
+    // Function to render todo items
+    function renderTodos() {
+        const todoList = document.getElementById("todoList");
+        todoList.innerHTML = "";
+
+        todos.forEach((todo, index) => {
+            const listItem = document.createElement("li");
+            listItem.classList.add("todo-item");
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = todo.done;
+            checkbox.onchange = () => markDone(index);
+
+            const text = document.createTextNode(todo.task);
+
+            const deleteButton = document.createElement("button");
+            deleteButton.innerText = "Delete";
+            deleteButton.onclick = () => deleteItem(index);
+
+            listItem.appendChild(checkbox);
+            listItem.appendChild(text);
+            listItem.appendChild(deleteButton);
+
+            todoList.appendChild(listItem);
+        });
+    }
+
+    // Function to add a new item
+    function addItem() {
+        const inputField = document.getElementById("todoInput");
+        const task = inputField.value.trim();
+
+        if (task !== "") {
+            todos.push({ task: task, done: false });
+            inputField.value = "";
+            renderTodos();
+        }
+    }
+
+    // Function to mark item as done
+    function markDone(index) {
+        todos[index].done = !todos[index].done;
+        renderTodos();
+    }
+
+    // Function to delete an item
+    function deleteItem(index) {
+        todos.splice(index, 1);
+        renderTodos();
+    }
+
+    // Initial rendering
+    renderTodos();
+</script>
+</body>
+</html>
